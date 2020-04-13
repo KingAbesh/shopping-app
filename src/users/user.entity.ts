@@ -11,9 +11,9 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   resetToken: string;
 
-  @Column()
+  @Column({ nullable: true })
   resetTokenExpiration: Date;
 }

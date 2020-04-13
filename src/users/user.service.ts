@@ -1,14 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './user.entity';
 import { Response } from 'express';
+import { CreateUserDto } from './dtos/createuser.dto';
 
 @Injectable()
 export class UserService {
-  getHello(): string {
-    return 'Hello World!';
-  }
-  getWelcome(res: Response): void {
-    res
-      .status(200)
-      .send({ status: true, message: 'Successfully fetched data' });
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+  ) {}
+
+  async createUser(user: CreateUserDto, res: Response): Promise<any> {
+    const existingUser = await this.usersRepository.find({
+      email: user.email.toLowerCase(),
+    });
+
+    if (existingUser.length > 0) {
+      res.send({
+        success: false,
+        message: 'A user with this given email already exists',
+      });
+      return;
+    }
+    return await this.usersRepository.save(user);
   }
 }
