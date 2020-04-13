@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dtos/createuser.dto';
+import { ValidParam } from './dtos/param.dto';
 import { Response } from 'express';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
@@ -38,9 +39,8 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard) //this ensures a user is authenticated.
   @Get('/user/:id')
-  async getUser(@Param('id') id: string, @Res() res: Response, @Req() req) {
+  async getUser(@Param('id') id: ValidParam, @Res() res: Response, @Req() req) {
     const user = await this.userService.findOne(id);
-    console.log(req);
     if (user) {
       res.send({
         status: true,

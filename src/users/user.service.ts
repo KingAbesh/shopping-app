@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { Response } from 'express';
 import { CreateUserDto } from './dtos/createuser.dto';
+import { ValidParam } from './dtos/param.dto';
 
 @Injectable()
 export class UserService {
@@ -36,7 +37,7 @@ export class UserService {
     return await this.usersRepository.save(this.usersRepository.create(user));
   }
 
-  async findOne(id: string) {
+  async findOne(id: ValidParam) {
     return await this.usersRepository.findOne(id);
   }
 
