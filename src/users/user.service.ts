@@ -17,6 +17,14 @@ export class UserService {
       email: user.email.toLowerCase(),
     });
 
+    if (!user.email || !user.password) {
+      res.send({
+        success: false,
+        message: 'All fields are required',
+      });
+      return;
+    }
+
     if (existingUser.length > 0) {
       res.send({
         success: false,
@@ -24,10 +32,15 @@ export class UserService {
       });
       return;
     }
-    return await this.usersRepository.save(user);
+
+    return await this.usersRepository.save(this.usersRepository.create(user));
   }
 
   async findOne(id: string) {
     return await this.usersRepository.findOne(id);
+  }
+
+  async findByEmail(email: string) {
+    return (await this.usersRepository.find({ email }))[0];
   }
 }
