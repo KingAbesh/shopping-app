@@ -4,9 +4,9 @@ import { AuthService } from './auth.service';
 import { UserService } from '../users/user.service';
 import { UserModule } from 'src/users/user.module';
 import { LocalStrategy } from './local.strategy';
+import { JwtStrategy } from './jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtService } from '@nestjs/jwt';
 
 dotenv.config();
 
@@ -19,7 +19,7 @@ dotenv.config();
       signOptions: { expiresIn: '24h' },
     }),
   ],
-  providers: [AuthService, UserService, LocalStrategy],
+  providers: [AuthService, UserService, LocalStrategy, JwtStrategy],
   exports: [AuthService, JwtModule],
 })
 export class AuthModule {}
