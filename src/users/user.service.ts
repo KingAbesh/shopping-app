@@ -12,7 +12,7 @@ export class UserService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async createUser(user: CreateUserDto, res: Response): Promise<any> {
+  async createUser(user: CreateUserDto, res: Response): Promise<User> {
     const existingUser = await this.usersRepository.find({
       email: user.email.toLowerCase(),
     });
@@ -25,5 +25,9 @@ export class UserService {
       return;
     }
     return await this.usersRepository.save(user);
+  }
+
+  async findOne(id: string) {
+    return await this.usersRepository.findOne(id);
   }
 }
